@@ -34,9 +34,9 @@ var AuthController = {
     var strategies = sails.config.passport
       , providers  = {};
 
-    // if (req.user) {
-    //   return res.redirect('/');
-    // }
+    if (req.user) {
+      return res.redirect('/');
+    }
 
     // Get a list of available providers for use in your templates.
     Object.keys(strategies).forEach(function (key) {
