@@ -139,6 +139,10 @@ var AuthController = {
       return res.status(400).json({'form': req.body});
     }
 
+    if (req.user) {
+      return res.status(400).json({'error': req.__('user.logged.in')});
+    }
+
     passport.callback(req, res, function (err, user) {
       if (err) {
         return tryAgain(err);
@@ -151,7 +155,7 @@ var AuthController = {
 
         // Upon successful login, send the user to the homepage were req.user
         // will available.
-        res.status(200);
+        res.status(200).json({username: user.username, email: user.email});
       });
     });
   },
