@@ -132,31 +132,14 @@ var AuthController = {
       var flashError = req.flash('error')[0];
 
       if (err && !flashError ) {
-        req.flash('error', 'Error.Passport.Generic');
+        return res.status(400).json({'error': 'Error.Passport.Generic'});
       } else if (flashError) {
-        req.flash('error', flashError);
+        return res.status(400).json({'error': flashError});
       }
-      req.flash('form', req.body);
-
-      // If an error was thrown, redirect the user to the
-      // login, register or disconnect action initiator view.
-      // These views should take care of rendering the error messages.
-      var action = req.param('action');
-
-      switch (action) {
-        case 'register':
-          res.redirect('/register');
-          break;
-        case 'disconnect':
-          res.redirect('back');
-          break;
-        default:
-          res.redirect('/login');
-      }
+      return res.status(400).json({'form': req.body});
     }
 
     passport.callback(req, res, function (err, user) {
-      console.log([err, user]);
       if (err) {
         return tryAgain(err);
       }
@@ -168,7 +151,7 @@ var AuthController = {
 
         // Upon successful login, send the user to the homepage were req.user
         // will available.
-        res.redirect('/');
+        res.status(200);
       });
     });
   },
